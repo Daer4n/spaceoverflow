@@ -1,1 +1,10 @@
-<h1>{{ slug }} ?</h1>
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() ~ ' | ' ~ question.slug }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ question.slug }} ?</h1>
+	<h2>{{ question.author.firstname }} {{ question.author.lastname }}</h2>
+{% endblock %}
