@@ -1,7 +1,9 @@
-$('.vote-arrows').find('a').click(function(e) {
-	e.preventDefault();
-	$container = $(this).parent();
+import $ from 'jquery';
 
+$('.vote-arrows').find('a').on("click", function(e) {
+	e.preventDefault();
+	var $container = $(this).parent();
+	
 	$.ajax({
 		url: '/answers/1/vote/'+$(e.currentTarget).data('direction'),
 		method: 'POST'

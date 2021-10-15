@@ -9,13 +9,16 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\DTO\Question;
 use App\DTO\Author;
+use Twig\Environment;
 
 class QuestionController extends AbstractController{
 
 	/** 
 	* @Route("/", name="app_question_home") 
 	*/ 
-	public function homepage () {
+	public function homepage (/* Environment $twig */) {
+
+		// return new Response( $twig->render('question/homepage.html.twig') );
 		return $this->render('question/homepage.html.twig');
 	}
 
