@@ -22,29 +22,33 @@ class QuestionController extends AbstractController{
 	/** 
 	* @Route("/", name="app_question_home") 
 	*/ 
-	public function homepage (/* Environment $twig */) : Response {
-
-		// return new Response( $twig->render('question/homepage.html.twig') );
-		return $this->render('question/homepage.html.twig');
+	public function homepage ( EntityManagerInterface $entityManager ) : Response {
+		$question = $entityManager->getRepository(Question::class)->findByAskedOrderNewest();
+		return $this->render('question/homepage.html.twig', ['questions' => $question]);
 	}
 
 	/** 
 	* @Route("/question/{slug}", name="app_question_show") 
 	*/ 
-	public function show($slug, MarkdownHelper $helper) : Response
+	public function show($slug, MarkdownHelper $helper, EntityManagerInterface $entityManager) : Response
 	{
-		$content = "Je suis tombé **sans faire exprès** dans un trou noir, pouvez vous m'indiquer comment sortir de là ?";
+		$question = $entityManager->getRepository(Question::class)->findOneBy(['slug' => $slug]);
 
-		$question = [
-			'slug' => ucfirst(str_replace("-", " ", $slug)),
-			'content' => $content
-		];
+		if ($question === null) throw $this->createNotFoundException();
+
+		// dd($question);
+
+		// $content = "Je suis tombé **sans faire exprès** dans un trou noir, pouvez vous m'indiquer comment sortir de là ?";
+		// $question = [
+		// 	'slug' => ucfirst(str_replace("-", " ", $slug)),
+		// 	'content' => $content
+		// ];
 
 		// $question = new Question( new Author('Alexis', 'Couturas'), $slug);
 
 		return $this->render(
 			'question/show.html.twig',
-			[ 'question' => $question ]
+			[ 'question' => $question, "answers" => []]
 		);
 	}
 
@@ -56,7 +60,7 @@ class QuestionController extends AbstractController{
 		$question = (new Question())
 		->setTitle("Comment sortir d'un trou noir ?")
 		->setSlug('sortir-d-un-trou-noir'.uniqid())
-		->setContent("Je suis tombé sans faire exprès dans un trou noir, pouvez vous m'indiquer comment sortir de là ?")
+		->setContent("Je suis tombé **sans faire exprès** dans un trou noir, pouvez vous m'indiquer comment sortir de là ?")
 		->setAskedAt(new \DateTime('1 hour ago'))
 		;
 
