@@ -30,21 +30,10 @@ class QuestionController extends AbstractController{
 	/** 
 	* @Route("/question/{slug}", name="app_question_show") 
 	*/ 
-	public function show($slug, MarkdownHelper $helper, EntityManagerInterface $entityManager) : Response
+	public function show($slug, Question $question, EntityManagerInterface $entityManager) : Response
 	{
-		$question = $entityManager->getRepository(Question::class)->findOneBy(['slug' => $slug]);
-
-		if ($question === null) throw $this->createNotFoundException();
-
-		// dd($question);
-
-		// $content = "Je suis tombé **sans faire exprès** dans un trou noir, pouvez vous m'indiquer comment sortir de là ?";
-		// $question = [
-		// 	'slug' => ucfirst(str_replace("-", " ", $slug)),
-		// 	'content' => $content
-		// ];
-
-		// $question = new Question( new Author('Alexis', 'Couturas'), $slug);
+		// $question = $entityManager->getRepository(Question::class)->findOneBy(['slug' => $slug]);
+		// if ($question === null) throw $this->createNotFoundException();
 
 		return $this->render(
 			'question/show.html.twig',
@@ -66,8 +55,6 @@ class QuestionController extends AbstractController{
 
 		$entityManager -> persist($question);
 		$entityManager -> flush();
-
-		// dd($question);
 
 		return new Response('<body><html>New Question '.$question->getId().'</html></body>');
 	}
