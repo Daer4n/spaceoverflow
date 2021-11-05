@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace App\Controller;
 
+use App\Entity\Question;
+use App\Service\MarkdownHelper;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Service\MarkdownHelper;
+use Doctrine\ORM\EntityManagerInterface;
+use DateTime;
+use Doctrine\ORM\EntityManager;
 
 // use App\DTO\Question;
 // use App\DTO\Author;
@@ -42,5 +46,25 @@ class QuestionController extends AbstractController{
 			'question/show.html.twig',
 			[ 'question' => $question ]
 		);
+	}
+
+	/**
+	 * @Route("/question/new", name="app_question_new", priority=1)
+	 */
+	public function new(EntityManagerInterface $entityManager) : Response
+	{
+		$question = (new Question())
+		->setTitle("Comment sortir d'un trou noir ?")
+		->setSlug('sortir-d-un-trou-noir'.uniqid())
+		->setContent("Je suis tombé sans faire exprès dans un trou noir, pouvez vous m'indiquer comment sortir de là ?")
+		->setAskedAt(new \DateTime('1 hour ago'))
+		;
+
+		$entityManager -> persist($question);
+		$entityManager -> flush();
+
+		// dd($question);
+
+		return new Response('<body><html>New Question '.$question->getId().'</html></body>');
 	}
 }
