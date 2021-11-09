@@ -9,7 +9,9 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col">
-            <button class="btn btn-question">Poser une Question</button>
+			<form action="{{ path("app_question_new") }}" method="post">
+	            <button class="btn btn-question" type="submit">Poser une Question</button>
+			</form>
         </div>
     </div>
     <div class="row">
@@ -21,7 +23,14 @@
 							<div class="col-2 text-center">
 								<img src="{{ asset('images/bender.png') }}" width="100" height="100">
 								<div class="vote-arrows vote-arrows-alt flex-fill pt-2" style="min-width: 90px;">
-									<span>+ {{ question.votes }} votes</span>
+									<span>
+										{{ question.getvotesString }}
+										{% if question.votes == 1 or question.votes == 0 or question.votes == -1 %}
+											vote
+										{% else %}
+											votes
+										{% endif %}
+									</span>
 								</div>
 							</div>
 							<div class="col">

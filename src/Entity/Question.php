@@ -109,4 +109,22 @@ class Question
 
         return $this;
     }
+
+	public function upVote(): self
+	{
+		$this->votes++;
+		return $this;
+	}
+
+	public function downVote(): self
+	{
+		$this->votes--;
+		return $this;
+	}
+
+	public function getVotesString()
+	{
+		$prefix = $this->votes > 0 ? '+' : ($this->votes < 0 ? '-' : '');
+		return sprintf('%s %d', $prefix, abs($this->votes));
+	}
 }
