@@ -14,8 +14,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use DateTime;
 use Doctrine\ORM\EntityManager;
 
-// use App\DTO\Question;
-// use App\DTO\Author;
 // use Twig\Environment;
 
 class QuestionController extends AbstractController{
@@ -51,7 +49,6 @@ class QuestionController extends AbstractController{
 		->setTitle("Comment sortir d'un trou noir ?")
 		->setSlug('sortir-d-un-trou-noir-'.uniqid())
 		->setContent("Je suis tombé **sans faire exprès** dans un trou noir, pouvez vous m'indiquer comment sortir de là ?")
-		->setVotes(0)
 		->setAskedAt(new \DateTime('1 hour ago'))
 		;
 

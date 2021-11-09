@@ -22,7 +22,7 @@ final class MarkdownHelper
 	{
 
 		$source = $this->cache->get(md5($source), function(ItemInterface $item) use ($source){
-			sleep(2);
+			// sleep(2);
 			$item->expiresAfter(20);
 			return $this->markdown->transformMarkdown($source);
 		});

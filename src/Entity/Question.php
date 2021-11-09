@@ -6,6 +6,7 @@ namespace App\Entity;
 
 use App\Repository\QuestionRepository;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Mapping\Annotation as Gedmo;
 
 /**
  * @ORM\Entity(repositoryClass=QuestionRepository::class)
@@ -27,6 +28,7 @@ class Question
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
+	 * @Gedmo\Slug()
      */
     private string $slug;
 
@@ -43,7 +45,7 @@ class Question
     /**
      * @ORM\Column(type="integer")
      */
-    private $votes;
+    private $votes = 0;
 
     public function getId(): ?int
     {
