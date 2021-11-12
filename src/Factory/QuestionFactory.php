@@ -40,15 +40,15 @@ final class QuestionFactory extends ModelFactory
         ];
     }
 
-    protected function initialize(): self
-    {
-        return $this
-            ->afterInstantiate(function(Question $question) {
-				$slugger = new AsciiSlugger();
-				$question->setSlug($slugger->slug($question->getTitle()));
-			})
-        ;
-    }
+	// protected function initialize(): self
+	// {
+	//     return $this
+	//         ->afterInstantiate(function(Question $question) {
+	// 			$slugger = new AsciiSlugger();
+	// 			$question->setSlug($slugger->slug($question->getTitle()));
+	// 		})
+	//     ;
+	// }
 
 	public function unpublished(): self
 	{

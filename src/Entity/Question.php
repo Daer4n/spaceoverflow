@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace App\Entity;
 
 use App\Repository\QuestionRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Gedmo\Mapping\Annotation as Gedmo;
 
@@ -14,6 +16,8 @@ use Gedmo\Mapping\Annotation as Gedmo;
  */
 class Question
 {
+	use VotesTrait;
+
     /**
      * @ORM\Id
      * @ORM\GeneratedValue
@@ -28,7 +32,7 @@ class Question
 
     /**
      * @ORM\Column(type="string", length=255, unique=true)
-	 * @Gedmo\Slug()
+	 * @Gedmo\Slug(fields={"title"})
      */
     private string $slug;
 
@@ -43,9 +47,14 @@ class Question
     private ?\DateTimeInterface $askedAt;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\OneToMany(targetEntity=Answer::class, mappedBy="question")
      */
-    private $votes = 0;
+    private Collection $answers;
+
+    public function __construct()
+    {
+        $this->answers = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -100,33 +109,33 @@ class Question
         return $this;
     }
 
-    public function getVotes(): ?int
+    /**
+     * @return Collection|Answer[]
+     */
+    public function getAnswers(): Collection
     {
-        return $this->votes;
+        return $this->answers;
     }
 
-    public function setVotes(int $votes): self
+    public function addAnswer(Answer $answer): self
     {
-        $this->votes = $votes;
+        if (!$this->answers->contains($answer)) {
+            $this->answers[] = $answer;
+            $answer->setQuestion($this);
+        }
 
         return $this;
     }
 
-	public function upVote(): self
-	{
-		$this->votes++;
-		return $this;
-	}
+    public function removeAnswer(Answer $answer): self
+    {
+        if ($this->answers->removeElement($answer)) {
+            // set the owning side to null (unless already changed)
+            if ($answer->getQuestion() === $this) {
+                $answer->setQuestion(null);
+            }
+        }
 
-	public function downVote(): self
-	{
-		$this->votes--;
-		return $this;
-	}
-
-	public function getVotesString()
-	{
-		$prefix = $this->votes > 0 ? '+' : ($this->votes < 0 ? '-' : '');
-		return sprintf('%s %d', $prefix, abs($this->votes));
-	}
+        return $this;
+    }
 }

@@ -9,9 +9,7 @@
 <div class="container">
     <div class="row mb-3">
         <div class="col">
-			<form action="{{ path("app_question_new") }}" method="post">
-	            <button class="btn btn-question" type="submit">Poser une Question</button>
-			</form>
+	        <a href="{{ path("app_question_new") }}" class="btn btn-question" type="submit">Poser une Question</a>
         </div>
     </div>
     <div class="row">
@@ -43,9 +41,14 @@
 							</div>
 						</div>
 					</div>
-					<a class="answer-link" href="#" style="color: #fff;">
+					<a class="answer-link" href="{{ path("app_question_show", {slug: question.slug}) }}" style="color: #fff;">
 						<p class="q-display-response text-center p-3">
-							<i class="fa fa-comments"></i> 6 réponses
+							<i class="fa fa-comments"></i> {{ question.answers|length }}
+							{% if question.answers|length == 1 or question.answers|length == 0 %}
+								réponse
+							{% else %}
+								réponses
+							{% endif %}
 						</p>
 					</a>
 				</div>

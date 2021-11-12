@@ -25,9 +25,11 @@ class QuestionRepository extends ServiceEntityRepository
     //  */
     public function findByAskedOrderNewest()
     {
-        return $this->addIsAskedQueryBuilder()
+		return $this->addIsAskedQueryBuilder()
+			->addSelect('a')
+			->leftJoin('q.answers', 'a')
             ->orderBy('q.askedAt', 'DESC')
-            ->setMaxResults(25)
+            ->setMaxResults(10)
             ->getQuery()
             ->getResult()
         ;

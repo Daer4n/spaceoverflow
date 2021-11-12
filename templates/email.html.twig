@@ -1,0 +1,8 @@
+<!DOCTYPE html>
+<html>
+	<body>
+		<h1>{{ question.title }}</h1>
+		<p>{{ question.content }}</p>
+		<a href="{{ url("app_question_show", {slug: question.slug}) }}">Lien vers votre question.</a>
+	</body>
+</html>
